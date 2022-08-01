@@ -224,6 +224,3 @@ function Widget() {
 }
 
 widget.register(Widget);
-function checkAuthor(arg0: (e: any) => void) {
-  throw new Error("Function not implemented.");
-}
