@@ -1,1 +1,1 @@
-# figma-widgets
+# Figma Widgets
