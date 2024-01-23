@@ -1,0 +1,15 @@
+{
+  "name": "VolvoNote",
+  "id": "1331613484920290604",
+  "api": "1.0.0",
+  "editorType": [
+    "figma",
+    "figjam"
+  ],
+  "permissions": [
+    "currentuser"
+  ],
+  "containsWidget": true,
+  "main": "dist/code.js",
+  "widgetApi": "1.0.0"
+}
