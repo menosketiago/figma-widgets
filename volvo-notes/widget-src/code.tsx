@@ -22,8 +22,12 @@ const colorBadgeBackground = "#a3a3a3";
 const colorTextPrimary = "#f5f5f5";
 const colorTextSecondary = "#a3a3a3";
 
+const fontFamily = "Inter";
 const fontSizeBody = 16;
 const fontSizeSmall = 14;
+
+const lineHeightLabels = 16;
+const lineHeightParagraph = 22;
 
 const authorSpacing = 12;
 const avatarSize = 32;
@@ -124,6 +128,7 @@ function Widget() {
                     <AutoLayout
                         name="author-date"
                         overflow="visible"
+                        spacing={4}
                         direction="vertical"
                         width="fill-parent"
                     >
@@ -132,8 +137,8 @@ function Widget() {
                             fill={colorTextPrimary}
                             width="fill-parent"
                             verticalAlignText="center"
-                            lineHeight="130%"
-                            fontFamily="Roboto Mono"
+                            lineHeight={lineHeightLabels}
+                            fontFamily={fontFamily}
                             fontSize={fontSizeBody}
                             letterSpacing={-0.56}
                             fontWeight={500}
@@ -145,8 +150,8 @@ function Widget() {
                             fill={colorTextSecondary}
                             width="fill-parent"
                             verticalAlignText="center"
-                            lineHeight="130%"
-                            fontFamily="Roboto Mono"
+                            lineHeight={lineHeightLabels}
+                            fontFamily={fontFamily}
                             fontSize={fontSizeSmall}
                             letterSpacing={-0.48}
                         >
@@ -170,8 +175,10 @@ function Widget() {
             </AutoLayout>
             <Input
                 width="fill-parent"
+                fontFamily={fontFamily}
                 fontSize={fontSizeBody}
                 fontWeight="normal"
+                lineHeight={lineHeightParagraph}
                 fill={colorTextPrimary}
                 inputFrameProps={{
                     overflow: "visible",
