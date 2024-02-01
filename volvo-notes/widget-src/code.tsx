@@ -26,21 +26,48 @@ const designTokens = {
         textPrimary: "#141414",
         textSecondary: "#707070",
     },
-    note: {
-        width: 600,
-        padding: 48,
-        spacing: 36,
-        radius: 8,
+    comfyMode: {
+        note: {
+            width: 600,
+            padding: 48,
+            spacing: 36,
+            radius: 8
+        },
+        font: {
+            family: "Inter",
+            sizeBody: 16,
+            sizeSmall: 14,
+            lineHeightLabels: 16,
+            lineHeightParagraph: 22,
+        },
+        avatarSize: 36,
+        authorSpacing: 12,
+        nameDateWidth: 336,
+        nameDateSpacing: 4,
+        logoWidth: 84,
+        logoHeight: 7
     },
-    font: {
-        family: "Inter",
-        sizeBody: 16,
-        sizeSmall: 14,
-        lineHeightLabels: 16,
-        lineHeightParagraph: 22,
-    },
-    avatarSize: 32,
-    authorSpacing: 12
+    compactMode: {
+        note: {
+            width: 375,
+            padding: 36,
+            spacing: 24,
+            radius: 8
+        },
+        font: {
+            family: "Inter",
+            sizeBody: 14,
+            sizeSmall: 12,
+            lineHeightLabels: 14,
+            lineHeightParagraph: 20
+        },
+        avatarSize: 28,
+        authorSpacing: 8,
+        nameDateWidth: 183,
+        nameDateSpacing: 4,
+        logoWidth: 60,
+        logoHeight: 5
+    }
 };
 
 const currentTime = new Date();
@@ -57,6 +84,7 @@ function Widget() {
     const [date, setDate] = useSyncedState<string>("date", "");
 
     const [mode, setMode] = useSyncedState("mode", true);
+    const [size, setSize] = useSyncedState("size", false);
 
     usePropertyMenu(
         [
@@ -65,10 +93,18 @@ function Widget() {
                 tooltip: "Color mode",
                 propertyName: "mode",
             },
+            {
+                itemType: "action",
+                tooltip: "Size",
+                propertyName: "size",
+            },
         ],
         ({ propertyName}) => {
             if (propertyName === "mode") {
                 setMode(!mode);
+            }
+            if (propertyName === "size") {
+                setSize(!size);
             }
         }
     );
@@ -118,56 +154,56 @@ function Widget() {
         <AutoLayout
             name="VolvoNote"
             fill={mode ? designTokens.darkMode.background : designTokens.lightMode.background}
-            cornerRadius={designTokens.note.radius}
+            cornerRadius={size ? designTokens.comfyMode.note.radius : designTokens.compactMode.note.radius}
             overflow="visible"
             direction="vertical"
-            spacing={designTokens.note.spacing}
-            padding={designTokens.note.padding}
-            width={designTokens.note.width}
+            padding={size ? designTokens.comfyMode.note.padding : designTokens.compactMode.note.padding}
+            spacing={size ? designTokens.comfyMode.note.spacing : designTokens.compactMode.note.spacing}
+            width={size ? designTokens.comfyMode.note.width : designTokens.compactMode.note.width}
         >
             <AutoLayout
                 name="header"
                 overflow="visible"
-                spacing={designTokens.note.spacing}
+                spacing={size ? designTokens.comfyMode.note.spacing : designTokens.compactMode.note.spacing}
                 width="fill-parent"
             >
                 <AutoLayout
                     name="author"
                     overflow="visible"
-                    spacing={designTokens.authorSpacing}
+                    spacing={size ? designTokens.comfyMode.authorSpacing : designTokens.compactMode.authorSpacing}
                     width="fill-parent"
                     verticalAlignItems="center"
                 >
                     {photoUrl ? (
                         <Image
-                            cornerRadius={designTokens.avatarSize}
-                            width={designTokens.avatarSize}
-                            height={designTokens.avatarSize}
+                            cornerRadius={size ? designTokens.comfyMode.avatarSize : designTokens.compactMode.avatarSize}
+                            width={size ? designTokens.comfyMode.avatarSize : designTokens.compactMode.avatarSize}
+                            height={size ? designTokens.comfyMode.avatarSize : designTokens.compactMode.avatarSize}
                             src={photoUrl}
                         />
                     ) : (
                         <Ellipse
                             name="avatar"
                             fill={designTokens.darkMode.backgroundBadge}
-                            width={designTokens.avatarSize}
-                            height={designTokens.avatarSize}
+                            width={size ? designTokens.comfyMode.avatarSize : designTokens.compactMode.avatarSize}
+                            height={size ? designTokens.comfyMode.avatarSize : designTokens.compactMode.avatarSize}
                         />
                     )}
                     <AutoLayout
                         name="author-date"
-                        overflow="visible"
-                        spacing={4}
-                        direction="vertical"
                         width="fill-parent"
+                        overflow="visible"
+                        spacing={size ? designTokens.comfyMode.nameDateSpacing : designTokens.compactMode.nameDateSpacing}
+                        direction="vertical"
                     >
                         <Text
                             name="author"
                             fill={mode ? designTokens.darkMode.textPrimary : designTokens.lightMode.textPrimary}
-                            width="fill-parent"
+                            width={size ? designTokens.comfyMode.nameDateWidth : designTokens.compactMode.nameDateWidth}
                             verticalAlignText="center"
-                            lineHeight={designTokens.font.lineHeightLabels}
-                            fontFamily={designTokens.font.family}
-                            fontSize={designTokens.font.sizeBody}
+                            lineHeight={size ? designTokens.comfyMode.font.lineHeightLabels : designTokens.compactMode.font.lineHeightLabels}
+                            fontFamily={size ? designTokens.comfyMode.font.family : designTokens.compactMode.font.family}
+                            fontSize={size ? designTokens.comfyMode.font.sizeBody : designTokens.compactMode.font.sizeBody}
                             letterSpacing={-0.56}
                             fontWeight={500}
                         >
@@ -176,11 +212,11 @@ function Widget() {
                         <Text
                             name="date"
                             fill={mode ? designTokens.darkMode.textSecondary : designTokens.lightMode.textSecondary}
-                            width="fill-parent"
+                            width={size ? designTokens.comfyMode.nameDateWidth : designTokens.compactMode.nameDateWidth}
                             verticalAlignText="center"
-                            lineHeight={designTokens.font.lineHeightLabels}
-                            fontFamily={designTokens.font.family}
-                            fontSize={designTokens.font.sizeSmall}
+                            lineHeight={size ? designTokens.comfyMode.font.lineHeightLabels : designTokens.compactMode.font.lineHeightLabels}
+                            fontFamily={size ? designTokens.comfyMode.font.family : designTokens.compactMode.font.family}
+                            fontSize={size ? designTokens.comfyMode.font.sizeSmall : designTokens.compactMode.font.sizeSmall}
                             letterSpacing={-0.48}
                         >
                             {date}
@@ -190,8 +226,8 @@ function Widget() {
                 {mode ? (
                     <SVG
                     name="logo"
-                    height={7}
-                    width={84}
+                    width={size ? designTokens.comfyMode.logoWidth : designTokens.compactMode.logoWidth}
+                    height={size ? designTokens.comfyMode.logoHeight : designTokens.compactMode.logoHeight}
                     src="<svg width='84' height='7' viewBox='0 0 84 7' fill='none' xmlns='http://www.w3.org/2000/svg'>
 <path fill-rule='evenodd' clip-rule='evenodd' d='M19.9493 3.2957C19.9493 1.46185 21.4781 0 24.3563 0C27.2353 0 28.7801 1.46185 28.7801 3.2957C28.7801 5.15566 27.3237 6.63823 24.3731 6.63823C21.4215 6.63823 19.9493 5.15566 19.9493 3.2957ZM22.8309 3.25697C22.8115 4.43239 23.2733 5.61502 24.3244 5.63394C25.4074 5.65465 25.8727 4.45941 25.8922 3.31191C25.9134 2.09505 25.3932 1.0142 24.4085 0.996185C23.4237 0.979071 22.8522 2.04011 22.8309 3.25697Z' fill='white' fill-opacity='.64'/>
 <path d='M1.42269 1.10286L4.31409 6.45037L7.66114 6.45307L10.503 1.10286H11.9275V0.133698H7.64256V1.10286H8.88034L6.81088 4.99753L4.714 1.10286H6.21809L6.21721 0.133698H0.00088476L0 1.10286H1.42269Z' fill='white' fill-opacity='.64'/>
@@ -204,8 +240,8 @@ function Widget() {
                 ) : (
                     <SVG
                         name="logo"
-                        height={7}
-                        width={84}
+                        width={size ? designTokens.comfyMode.logoWidth : designTokens.compactMode.logoWidth}
+                        height={size ? designTokens.comfyMode.logoHeight : designTokens.compactMode.logoHeight}
                         src="<svg width='84' height='7' viewBox='0 0 84 7' fill='none' xmlns='http://www.w3.org/2000/svg'>
   <path fill-rule='evenodd' clip-rule='evenodd' d='M19.9493 3.2957C19.9493 1.46185 21.4781 0 24.3563 0C27.2353 0 28.7801 1.46185 28.7801 3.2957C28.7801 5.15566 27.3237 6.63823 24.3731 6.63823C21.4215 6.63823 19.9493 5.15566 19.9493 3.2957ZM22.8309 3.25697C22.8115 4.43239 23.2733 5.61502 24.3244 5.63394C25.4074 5.65465 25.8727 4.45941 25.8922 3.31191C25.9134 2.09505 25.3932 1.0142 24.4085 0.996185C23.4237 0.979071 22.8522 2.04011 22.8309 3.25697Z' fill='black' fill-opacity='.64'/>
   <path d='M1.42269 1.10286L4.31409 6.45037L7.66114 6.45307L10.503 1.10286H11.9275V0.133698H7.64256V1.10286H8.88034L6.81088 4.99753L4.714 1.10286H6.21809L6.21721 0.133698H0.00088476L0 1.10286H1.42269Z' fill='black' fill-opacity='.64'/>
@@ -219,10 +255,10 @@ function Widget() {
             </AutoLayout>
             <Input
                 width="fill-parent"
-                fontFamily={designTokens.font.family}
-                fontSize={designTokens.font.sizeBody}
+                fontFamily={size ? designTokens.comfyMode.font.family : designTokens.compactMode.font.family}
+                fontSize={size ? designTokens.comfyMode.font.sizeBody : designTokens.compactMode.font.sizeBody}
                 fontWeight="normal"
-                lineHeight={designTokens.font.lineHeightParagraph}
+                lineHeight={size ? designTokens.comfyMode.font.lineHeightParagraph : designTokens.compactMode.font.lineHeightParagraph}
                 fill={mode ? designTokens.darkMode.textPrimary : designTokens.lightMode.textPrimary}
                 inputFrameProps={{
                     overflow: "visible",
